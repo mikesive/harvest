@@ -1,0 +1,8 @@
+{
+  "name": "Harvest",
+  "version": "0.1.0",
+  "dependencies": {
+    "grunt-cli": "~0.1.13",
+    "phaser": "~2.4.1"
+  }
+}

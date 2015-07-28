@@ -16,6 +16,7 @@ module.exports = function(grunt) {
         }
       }
     },
+    clean: ["dist"],
     includeSource: {
       options: {
         templates: {
@@ -23,6 +24,9 @@ module.exports = function(grunt) {
             js: '<script src="{filePath}"></script>',
             css: '<link rel="stylesheet" type="text/css" href="{filePath}" />',
           }
+        },
+        rename: function(dest, matchedSrcPath, options) {
+          return matchedSrcPath.replace('dist/', '');
         }
       },
       js: {
@@ -55,11 +59,11 @@ module.exports = function(grunt) {
   });
 
   // Load plugins.
-  var tasks = ['grunt-contrib-uglify', 'grunt-contrib-connect', 'grunt-contrib-copy', 'grunt-bowercopy', 'grunt-include-source'];
+  var tasks = ['grunt-contrib-uglify', 'grunt-contrib-connect', 'grunt-contrib-copy', 'grunt-bowercopy', 'grunt-include-source', 'grunt-contrib-clean'];
   loadTasks(tasks);
 
   // Default task(s).
-  grunt.registerTask('build-dist', ['uglify', 'bowercopy', 'includeSource']);
+  grunt.registerTask('build-dist', ['clean', 'uglify', 'bowercopy', 'includeSource']);
   grunt.registerTask('start', ['build-dist', 'connect:server']);
   grunt.registerTask('default', ['start']);
 

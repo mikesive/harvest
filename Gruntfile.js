@@ -1,4 +1,11 @@
 module.exports = function(grunt) {
+
+  function loadTasks(tasks){
+    tasks.forEach(function(task){
+      grunt.loadNpmTasks(task);
+    });
+  }
+
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -9,10 +16,19 @@ module.exports = function(grunt) {
         }
       }
     },
-    copy: {
-      html: {
-        src: 'app/index.html',
-        dest: 'dist/index.html'
+    includeSource: {
+      options: {
+        templates: {
+          html: {
+            js: '<script src="{filePath}"></script>',
+            css: '<link rel="stylesheet" type="text/css" href="{filePath}" />',
+          }
+        }
+      },
+      js: {
+        files: {
+          'dist/index.html': 'app/index.html'
+        }
       }
     },
     bowercopy: {
@@ -29,7 +45,6 @@ module.exports = function(grunt) {
       server: {
         options: {
           port: 9000,
-          livereload: 35729,
           hostname: '127.0.0.1',
           keepalive: true,
           base: 'dist',
@@ -40,13 +55,12 @@ module.exports = function(grunt) {
   });
 
   // Load plugins.
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-bowercopy');
-  // grunt.loadNpmTasks();
+  var tasks = ['grunt-contrib-uglify', 'grunt-contrib-connect', 'grunt-contrib-copy', 'grunt-bowercopy', 'grunt-include-source'];
+  loadTasks(tasks);
 
   // Default task(s).
-  grunt.registerTask('default', ['uglify', 'copy', 'bowercopy', 'connect:server']);
+  grunt.registerTask('build-dist', ['uglify', 'bowercopy', 'includeSource']);
+  grunt.registerTask('start', ['build-dist', 'connect:server']);
+  grunt.registerTask('default', ['start']);
 
 };

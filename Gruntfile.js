@@ -12,7 +12,7 @@ module.exports = function(grunt) {
     uglify: {
       js: {
         files: {
-          'dist/js/main.min.js': ['app/js/main.js']
+          'dist/js/*.min.js': ['app/js/*.js']
         }
       }
     },
@@ -45,26 +45,44 @@ module.exports = function(grunt) {
         }
       }
     },
+    copy: {
+      images: {
+        expand: true,
+        cwd: 'app/images/',
+        src: ['**'],
+        dest: 'dist/images/'
+      }
+    },
     connect: {
       server: {
         options: {
           port: 9000,
           hostname: '127.0.0.1',
-          keepalive: true,
           base: 'dist',
-          open: 'http://127.0.0.1:9000/index.html'
+          open: 'http://127.0.0.1:9000/index.html',
+          livereload: 35729
+        }
+      }
+    },
+    watch: {
+      scripts: {
+        files: ['app/js/*.js'],
+        tasks: ['build-dist'],
+        options: {
+          spawn: false,
+          livereload: 35729
         }
       }
     }
   });
 
   // Load plugins.
-  var tasks = ['grunt-contrib-uglify', 'grunt-contrib-connect', 'grunt-contrib-copy', 'grunt-bowercopy', 'grunt-include-source', 'grunt-contrib-clean'];
+  var tasks = ['grunt-contrib-uglify', 'grunt-contrib-connect', 'grunt-contrib-copy', 'grunt-bowercopy', 'grunt-include-source', 'grunt-contrib-clean', 'grunt-contrib-watch'];
   loadTasks(tasks);
 
   // Default task(s).
-  grunt.registerTask('build-dist', ['clean', 'uglify', 'bowercopy', 'includeSource']);
-  grunt.registerTask('start', ['build-dist', 'connect:server']);
+  grunt.registerTask('build-dist', ['clean', 'uglify', 'bowercopy', 'copy', 'includeSource']);
+  grunt.registerTask('start', ['build-dist', 'connect:server', 'watch']);
   grunt.registerTask('default', ['start']);
 
 };

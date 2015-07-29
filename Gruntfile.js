@@ -12,7 +12,7 @@ module.exports = function(grunt) {
     uglify: {
       js: {
         files: {
-          'dist/js/*.min.js': ['app/js/*.js']
+          'dist/js/main.min.js': ['app/js/*.js']
         }
       }
     },

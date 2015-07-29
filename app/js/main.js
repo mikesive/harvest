@@ -16,7 +16,7 @@ var Menu = {
     man = game.add.sprite(game.world.centerX, game.world.centerY, 'man-left');
     man.width = 50;
     man.height = 68;
-    addNewObstacle(50);
+    newObstacle(50);
   },
 
   update: function() {
@@ -72,7 +72,7 @@ var speedCount = 0;
 var obstaclesAddCount = 0;
 var obstaclesAddSpeed = 10;
 
-function addNewObstacle(x){
+function newObstacle(x){
   var obstacle = game.add.sprite(x, game.world.bounds.height, 'obstacle');
   obstacle.width = 50;
   obstacle.height = 60;
